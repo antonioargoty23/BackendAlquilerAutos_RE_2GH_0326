@@ -1,5 +1,15 @@
 const { Autos } = require('../models');
 
+exports.obtenerTodosLosAutos = async (req, res) => {
+  try {
+    const autos = await Autos.findAll(); // SIN filtro
+    res.json(autos);
+  } catch (e) {
+    console.error("Error al obtener autos:", e);
+    res.status(500).json({ mensaje: "Error al obtener autos" });
+  }
+};
+
 exports.autosDisponibles = async (req, res) => {
     try {
         const autos = await Autos.findAll({ 

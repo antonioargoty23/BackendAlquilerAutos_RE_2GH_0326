@@ -3,6 +3,9 @@ const router = express.Router();
 
 const autoController = require('../controller/autoscontroller');
 
+// Obtener TODOS los autos
+router.get('/todos', autoController.obtenerTodosLosAutos);
+
 // Ruta para obtener autos disponibles
 router.get('/', autoController.autosDisponibles);
 
