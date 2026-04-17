@@ -1,5 +1,6 @@
 const { Autos } = require('../models');
 
+//1. obtener todos los autos
 exports.obtenerTodosLosAutos = async (req, res) => {
   try {
     const autos = await Autos.findAll(); // SIN filtro
@@ -10,6 +11,7 @@ exports.obtenerTodosLosAutos = async (req, res) => {
   }
 };
 
+//2. traer unicamente autos disponibles ==1
 exports.autosDisponibles = async (req, res) => {
     try {
         const autos = await Autos.findAll({ 
@@ -21,6 +23,7 @@ exports.autosDisponibles = async (req, res) => {
     } 
 };
 
+//3. guardar un nuevo auto
 exports.registrarAuto = async (req, res) => {
     //console.log("Datos recibidos en el backend:", req.body); // Log para verificar los datos  
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
@@ -38,5 +41,29 @@ exports.registrarAuto = async (req, res) => {
     } catch (e) {
         console.error('Error al crear el auto:', e); 
         res.status(500).json({ mensaje: "Error al crear el auto", error: e.message });
+    }
+};
+
+//4. Cambiar disponibilidad de un auto por ID
+exports.cambiarDisponibilidad = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { disponibilidad } = req.body; // 1 = disponible, 0 = no disponible
+
+        const auto = await Autos.findByPk(id);
+
+        if (!auto) {
+            return res.status(404).json({ mensaje: "Auto no encontrado" });
+        }
+
+        await auto.update({ disponibilidad });
+
+        res.json({ 
+            mensaje: "Disponibilidad actualizada correctamente",
+            auto 
+        });
+    } catch (e) {
+        console.error(e);
+        res.json({ mensaje: "Error al actualizar disponibilidad", error: e.message });
     }
 };

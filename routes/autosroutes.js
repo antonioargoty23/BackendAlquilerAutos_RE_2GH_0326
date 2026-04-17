@@ -12,4 +12,8 @@ router.get('/', autoController.autosDisponibles);
 // Ruta para registrar un nuevo auto
 router.post('/', autoController.registrarAuto);
 
+// Cambiar disponibilidad de un auto
+router.put('/disponibilidad/:id', autosController.cambiarDisponibilidad);
+
+
 module.exports = router;
