@@ -13,7 +13,7 @@ router.get('/', autoController.autosDisponibles);
 router.post('/', autoController.registrarAuto);
 
 // Cambiar disponibilidad de un auto
-router.put('/disponibilidad/:id', autosController.cambiarDisponibilidad);
+router.put('/disponibilidad/:id', autoController.cambiarDisponibilidad);
 
 
 module.exports = router;
