@@ -82,16 +82,13 @@ exports.devolverVehiculo = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // 1. Buscar el alquiler
         const alquiler = await Alquiler.findByPk(id);
         if (!alquiler) {
             return res.status(404).json({ mensaje: "Alquiler no encontrado" });
         }
 
-        // 2. Marcar alquiler como devuelto
         await alquiler.update({ estado: 'devuelto' });
 
-        // 3. Liberar el auto — volver disponibilidad a 1
         await Autos.update(
             { disponibilidad: 1 },
             { where: { id: alquiler.autoId } }
@@ -101,6 +98,6 @@ exports.devolverVehiculo = async (req, res) => {
 
     } catch (e) {
         console.error(e);
-        res.json({ mensaje: "Error al devolver el vehículo", error: e.message });
+        res.status(500).json({ mensaje: "Error al devolver el vehículo", error: e.message });
     }
 };
