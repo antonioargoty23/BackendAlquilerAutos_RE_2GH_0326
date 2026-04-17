@@ -1,6 +1,5 @@
 'use strict';
 const { Model } = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => {
   class Alquiler extends Model {
     static associate(models) {
@@ -20,11 +19,16 @@ module.exports = (sequelize, DataTypes) => {
     fechaInicio: DataTypes.DATE,
     fechaFin: DataTypes.DATE,
     clienteId: DataTypes.INTEGER,
-    autoId: DataTypes.INTEGER
+    autoId: DataTypes.INTEGER,
+    estado: {                        // ✅ campo agregado
+      type: DataTypes.STRING,
+      defaultValue: 'activo',
+      allowNull: false,
+    }
   }, {
     sequelize,
     modelName: 'Alquiler',
-    tableName: 'alquiler' // Nombre exacto de la tabla
+    tableName: 'alquiler'
   });
   return Alquiler;
 };
