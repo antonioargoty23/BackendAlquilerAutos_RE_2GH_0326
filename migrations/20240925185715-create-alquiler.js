@@ -1,47 +1,53 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('alquiler', { // Nombre de la tabla en singular
+  async up(queryInterface, DataTypes) {
+    await queryInterface.createTable('alquiler', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
       },
       fechaInicio: {
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       fechaFin: {
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       clienteId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
-          model: 'clientes', // debe coincidir con el nombre de la tabla de clientes
+          model: 'clientes',
           key: 'id'
         },
         onUpdate: 'CASCADE'
       },
       autoId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
-          model: 'autos', // debe coincidir con el nombre de la tabla de autos
+          model: 'autos',
           key: 'id'
         },
         onUpdate: 'CASCADE'
       },
+      estado: {                        // ✅ campo agregado aquí
+        type: DataTypes.STRING,
+        defaultValue: 'activo',
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       }
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('alquiler'); // Nombre en singular, debe coincidir
+    await queryInterface.dropTable('alquiler');
   }
 };

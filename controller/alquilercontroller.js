@@ -1,6 +1,6 @@
 const { Alquiler, Cliente, Autos } = require('../models');
 
-//1.servicio para crear alquiler de vehiculo a un cliente
+//1.crear alquiler de vehiculo a un cliente
 exports.realizarAlquiler = async (req, res) => {
     const { clienteId, autoId, fechaInicio, fechaFin } = req.body;
     try {
@@ -77,3 +77,30 @@ exports.historialPorCliente = async (req, res) => {
     }
 };
 
+// Devolver un vehiculo alquilado
+exports.devolverVehiculo = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // 1. Buscar el alquiler
+        const alquiler = await Alquiler.findByPk(id);
+        if (!alquiler) {
+            return res.status(404).json({ mensaje: "Alquiler no encontrado" });
+        }
+
+        // 2. Marcar alquiler como devuelto
+        await alquiler.update({ estado: 'devuelto' });
+
+        // 3. Liberar el auto — volver disponibilidad a 1
+        await Autos.update(
+            { disponibilidad: 1 },
+            { where: { id: alquiler.autoId } }
+        );
+
+        res.json({ mensaje: "Vehículo devuelto correctamente" });
+
+    } catch (e) {
+        console.error(e);
+        res.json({ mensaje: "Error al devolver el vehículo", error: e.message });
+    }
+};

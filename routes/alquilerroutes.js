@@ -11,4 +11,7 @@ router.get('/historial', alquilerController.historial);
 // Ruta para obtener los alquileres de 1 cliente
 router.get('/cliente/:clienteId', alquilerController.historialPorCliente);
 
+// Cambiar estado del alquiler (devolver vehículo)
+router.put('/devolver/:id', alquilerController.devolverVehiculo);
+
 module.exports = router;
