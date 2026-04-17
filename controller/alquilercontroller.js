@@ -1,5 +1,6 @@
 const { Alquiler, Cliente, Autos } = require('../models');
 
+//1.servicio para crear alquiler de vehiculo a un cliente
 exports.realizarAlquiler = async (req, res) => {
     const { clienteId, autoId, fechaInicio, fechaFin } = req.body;
     try {
@@ -30,7 +31,7 @@ exports.realizarAlquiler = async (req, res) => {
 };
 
 
-
+// 2. devolver el historial completo de todos los alquileres 
 exports.historial = async (req, res) => {
     try {
         const alquileres = await Alquiler.findAll({
@@ -49,3 +50,30 @@ exports.historial = async (req, res) => {
         res.json({ mensaje: "Error al obtener el historial de alquileres",error: e.message});
     }
 };
+
+// 3. traer alquileres realizados por 1 usuario
+exports.historialPorCliente = async (req, res) => {
+    const { clienteId } = req.params;
+
+    try {
+        const alquileres = await Alquiler.findAll({
+            where: { clienteId },
+            include: [
+                {
+                    model: Autos,
+                    as: 'autos',
+                    attributes: ['marca', 'modelo', 'imagen', 'valorAlquiler', 'anio']
+                }
+            ]
+        });
+
+        res.status(200).json(alquileres);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({
+            mensaje: "Error al obtener alquileres del cliente",
+            error: e.message
+        });
+    }
+};
+

@@ -8,4 +8,7 @@ router.post('/', alquilerController.realizarAlquiler);
 // Ruta para obtener el historial de alquileres
 router.get('/historial', alquilerController.historial);
 
+// Ruta para obtener los alquileres de 1 cliente
+router.get('/cliente/:clienteId', alquilerController.historialPorCliente);
+
 module.exports = router;
